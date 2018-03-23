@@ -54,8 +54,8 @@ byte version = nfc.getFirmwareVersion(); // Variable to store Firmware version o
 
 // If can't find an RFID Module 
 if (! version) { 
-Serial.print("Didn't find RC522 board.");
-while(1); //Wait until a RFID Module is found
+  Serial.print("Didn't find RC522 board.");
+  while(1); //Wait until a RFID Module is found
 }
 
 // If found, print the information about the RFID Module
@@ -69,11 +69,11 @@ void loop() {
   //----------------------------------------------
   // Ultrasound sensor loop
   
- long duration, distance;
+  long duration, distance;
   digitalWrite(trigPinL, LOW);  // Added this line
   delayMicroseconds(2); // Added this line
   digitalWrite(trigPinL, HIGH);
-//  delayMicroseconds(1000); - Removed this line
+  // delayMicroseconds(1000); - Removed this line
   delayMicroseconds(10); // Added this line
   digitalWrite(trigPinL, LOW);
   duration = pulseIn(echoPinL, HIGH);
@@ -88,47 +88,47 @@ void loop() {
   delay(500);
 
   //-----------------------------------------------
-// RFID loop
+  // RFID loop
 
-String GoodTag="False"; // Variable used to confirm good Tag Detected
+  String GoodTag="False"; // Variable used to confirm good Tag Detected
 
-// Check to see if a Tag was detected
-// If yes, then the variable FoundTag will contain "MI_OK"
-FoundTag = nfc.requestTag(MF1_REQIDL, TagData);
+  // Check to see if a Tag was detected
+  // If yes, then the variable FoundTag will contain "MI_OK"
+  FoundTag = nfc.requestTag(MF1_REQIDL, TagData);
 
-if (FoundTag == MI_OK) {
-delay(200);
+  if (FoundTag == MI_OK) {
+    delay(200);
 
-// Get anti-collision value to properly read information from the Tag
-ReadTag = nfc.antiCollision(TagData);
-memcpy(TagSerialNumber, TagData, 4); // Write the Tag information in the TagSerialNumber variable
+    // Get anti-collision value to properly read information from the Tag
+    ReadTag = nfc.antiCollision(TagData);
+    memcpy(TagSerialNumber, TagData, 4); // Write the Tag information in the TagSerialNumber variable
 
-Serial.println("Tag detected.");
-Serial.print("Serial Number: ");
-for (int i = 0; i < 4; i++) { // Loop to print serial number to serial monitor
-Serial.print(TagSerialNumber[i], HEX);
-Serial.print(", ");
-}
-Serial.println("");
+    Serial.println("Tag detected.");
+    Serial.print("Serial Number: ");
+    for (int i = 0; i < 4; i++) { // Loop to print serial number to serial monitor
+    Serial.print(TagSerialNumber[i], HEX);
+    Serial.print(", ");
+  }
+  Serial.println("");
 
-// Check if detected Tag has the right Serial number we are looking for 
-for(int i=0; i < 4; i++){
-if (GoodTagSerialNumber[i] != TagSerialNumber[i]) {
-break; // if not equal, then break out of the "for" loop
-}
-if (i == 3) { // if we made it to 4 loops then the Tag Serial numbers are matching
-GoodTag="TRUE";
-} 
-}
-if (GoodTag == "TRUE"){
-Serial.write("RFIDAccept");
-delay(1500);
-}
-else {
-Serial.write("RFIDDenied");
-delay(500); 
-}
-}
+  // Check if detected Tag has the right Serial number we are looking for 
+  for(int i=0; i < 4; i++){
+    if (GoodTagSerialNumber[i] != TagSerialNumber[i]) {
+      break; // if not equal, then break out of the "for" loop
+    }
+    if (i == 3) { // if we made it to 4 loops then the Tag Serial numbers are matching
+      GoodTag="TRUE";
+    } 
+  }
+  if (GoodTag == "TRUE"){
+    Serial.write("RFIDAccept");
+    delay(1500);
+  }
+  else {
+    Serial.write("RFIDDenied");
+    delay(500); 
+  }
+ }
   
 }
 
