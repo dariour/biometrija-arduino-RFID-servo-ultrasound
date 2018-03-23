@@ -29,40 +29,40 @@ int pos = 0;    // variable to store the servo position
 
 void setup() {
   
-// ----------------------------------------
-// Servo Setup
-myservo.attach(9);  // attaches the servo on pin 9 to the servo object
+  // ----------------------------------------
+  // Servo Setup
+  myservo.attach(9);  // attaches the servo on pin 9 to the servo object
 
-// ----------------------------------------
-// Ultrasound sensor Setup
-pinMode(trigPinL, OUTPUT);
-pinMode(echoPinL, INPUT);
-pinMode(trigPinR, OUTPUT);
-pinMode(echoPinR, INPUT);
+  // ----------------------------------------
+  // Ultrasound sensor Setup
+  pinMode(trigPinL, OUTPUT);
+  pinMode(echoPinL, INPUT);
+  pinMode(trigPinR, OUTPUT);
+  pinMode(echoPinR, INPUT);
 
-//------------------------------------------
-// RFID Setup
-pinMode(Buzzer, OUTPUT); // Set buzzer pin to an Output pin
-digitalWrite(Buzzer, LOW); // Buzzer Off at startup
-SPI.begin();
-Serial.begin(115200);
+  //------------------------------------------
+  // RFID Setup
+  pinMode(Buzzer, OUTPUT); // Set buzzer pin to an Output pin
+  digitalWrite(Buzzer, LOW); // Buzzer Off at startup
+  SPI.begin();
+  Serial.begin(115200);
 
-// Start to find an RFID Module
-Serial.println("Looking for RFID Reader");
-nfc.begin();
-byte version = nfc.getFirmwareVersion(); // Variable to store Firmware version of the Module
+  // Start to find an RFID Module
+  Serial.println("Looking for RFID Reader");
+  nfc.begin();
+  byte version = nfc.getFirmwareVersion(); // Variable to store Firmware version of the Module
 
-// If can't find an RFID Module 
-if (! version) { 
-  Serial.print("Didn't find RC522 board.");
-  while(1); //Wait until a RFID Module is found
-}
+  // If can't find an RFID Module 
+  if (! version) { 
+    Serial.print("Didn't find RC522 board.");
+    while(1); //Wait until a RFID Module is found
+  }
 
-// If found, print the information about the RFID Module
-Serial.print("Found chip RC522 ");
-Serial.print("Firmware version: 0x");
-Serial.println(version, HEX);
-Serial.println();
+  // If found, print the information about the RFID Module
+  Serial.print("Found chip RC522 ");
+  Serial.print("Firmware version: 0x");
+  Serial.println(version, HEX);
+  Serial.println();
 }
 
 void loop() {
